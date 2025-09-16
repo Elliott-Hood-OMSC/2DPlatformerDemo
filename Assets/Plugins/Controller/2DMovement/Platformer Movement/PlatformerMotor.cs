@@ -1,0 +1,153 @@
+using System;
+using UnityEngine;
+
+namespace NetControllerSystem.Platformer2D
+{
+    /// <summary>
+    /// Takes input in FixedUpdate time
+    /// </summary>
+    public class PlatformerMotor : Motor
+    {
+        [SerializeField] private Collider2D _collider;
+        public Collider2D Collider => _collider;
+        [SerializeField] private GroundCheck _groundCheck;
+        [SerializeField] private PlatformerHorizontalMovementModule _horizontalMovementModule;
+        [SerializeField] private PlatformerJumpModule _jumpModule;
+        [SerializeField] private PlatformerCrouchModule _crouchModule;
+        [SerializeField] private PlatformerWallModule _platformerWallModule;
+        public PlatformerHorizontalMovementModule HorizontalMovementModule => _horizontalMovementModule;
+        public PlatformerJumpModule JumpModule => _jumpModule;
+        public PlatformerCrouchModule CrouchModule => _crouchModule;
+        
+        public Vector2 LastVelocity { get; private set; }
+
+        public float CounteractGravityVelocity => -Physics2D.gravity.y * Rb.gravityScale * Time.fixedDeltaTime;
+        public Vector3 GroundContactPoint => new Vector2(transform.position.x, Collider.bounds.min.y);
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _horizontalMovementModule.Initialize(this);
+            _jumpModule.Initialize(this);
+            _crouchModule.Initialize(this);
+            _platformerWallModule.Initialize(this);
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            HandleLandingCheck();
+        }
+
+        public override void HandleLocalControllerMovement()
+        {
+            _crouchModule.HandleLocalMovement();
+            _horizontalMovementModule.HandleLocalMovement();
+            _jumpModule.HandleLocalMovement();
+            _platformerWallModule.HandleLocalMovement();
+
+            LastVelocity = Rb.linearVelocity;
+        }
+
+        protected void OnEnabledStateChanged(bool oldValue, bool newValue)
+        {
+            LastVelocity = Rb.linearVelocity;
+        }
+
+
+        #region Ground Check
+
+        public bool Grounded { get; set; }
+        private bool _wasGrounded;
+        private const float MAX_GROUNDED_Y_VELOCITY = 1.5f;
+
+        public float LastGroundedTime { get; private set; }
+        public Vector2 LastGroundedPosition { get; private set; }
+        
+        public event EventHandler<PositionEventArgs> OnLand;
+        public event EventHandler OnGroundedUpdate;
+
+        private void HandleLandingCheck()
+        {
+            _wasGrounded = Grounded;
+            Grounded = _groundCheck.Grounded && Rb.linearVelocity.y < MAX_GROUNDED_Y_VELOCITY;
+            if (Grounded)
+            {
+                LastGroundedPosition = transform.position;
+                if (!_wasGrounded)
+                {
+                    Land();
+                    NewGroundedState();
+                }
+            }
+            else if (_wasGrounded)
+            {
+                // Leave the ground (coyote time)
+                LastGroundedTime = Time.time;
+                NewGroundedState();
+            }
+        }
+
+        /// <summary>
+        /// Called when landing or leaving the ground
+        /// </summary>
+        protected virtual void NewGroundedState()
+        {
+            OnGroundedUpdate?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected virtual void Land()
+        {
+            OnLand?.Invoke(this, new PositionEventArgs
+            {
+                Position = GroundContactPoint
+            });
+        }
+
+        #endregion
+
+        #region Weightlessness
+
+        public bool Weightless => _weightlessUntilTime >= Time.time;
+        private float _weightlessUntilTime = -1;
+
+        public void MakeWeightless(float duration)
+        {
+            float weightlessUntil = Time.time + duration;
+            if (weightlessUntil < _weightlessUntilTime)
+                return;
+
+            _weightlessUntilTime = weightlessUntil;
+            SetGravity(0);
+        }
+
+        #endregion
+
+        #region Rigidbody Settings
+        
+        public void SetGravity(float gravity)
+        {
+            if (Weightless)
+            {
+                Rb.gravityScale = 0;
+            }
+            else
+            {
+                Rb.gravityScale = gravity;
+            }
+        }
+        
+        public override void SetRigidbodySettings(RigidbodySettings settings)
+        {
+            Rb.linearDamping = settings.drag;
+            Rb.mass = settings.mass;
+            SetGravity(settings.gravity);
+        }
+
+        #endregion
+    }
+
+    public class PositionEventArgs : EventArgs
+    {
+        public Vector3 Position;
+    }
+}
