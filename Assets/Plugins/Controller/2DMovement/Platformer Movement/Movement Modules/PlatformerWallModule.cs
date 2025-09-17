@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlatformerWallModule : PlatformerMotorModule
 {
     [Tooltip("The relative height multiplier for wall detection. (aligned to the bottom of the collider)")]
-    [SerializeField] private float _wallDetectionHeightMultiplier = 0.5f;
+    [SerializeField] private float _wallDetectionHeightMultiplier = 1/16f;
     private PlatformerJumpModule _jumpModule;
     
     public override void HandleMovement()

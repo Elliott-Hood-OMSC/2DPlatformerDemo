@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d038d5096abbfc4aa8ec808aacdfd55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wallDetectionHeightMultiplier: 0.5
+  _wallDetectionHeightMultiplier: 0.0625
   _climbableTag: Climbable
   _wallSlideSpeed: 5
   _wallClimbSpeed: 6
