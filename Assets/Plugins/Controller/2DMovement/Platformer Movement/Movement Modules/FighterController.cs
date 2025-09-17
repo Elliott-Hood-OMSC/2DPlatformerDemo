@@ -27,7 +27,7 @@ public class FighterController : RigidbodyController
     protected override void Awake()
     {
         ForceUpdateState(States.Movement);
-        ResetRigidbodySettings();
+        //ResetRigidbodySettings();
         //CreateAbilities();
     }
 
