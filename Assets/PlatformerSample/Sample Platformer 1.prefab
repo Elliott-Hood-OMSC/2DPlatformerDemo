@@ -128,9 +128,9 @@ MonoBehaviour:
   _flipAnchor: {fileID: 5504342347968506301}
   _jumpAnimationLength: 0.25
   _fighterController: {fileID: 7580666695933235646}
-  _crouchModule: {fileID: 0}
+  _crouchModule: {fileID: 5411227954514704049}
   _platformerJumpModule: {fileID: 7276706453744137074}
-  _platformerWallModule: {fileID: 0}
+  _platformerWallModule: {fileID: 4722448199823919955}
 --- !u!1 &156159312054672884
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,8 +146,10 @@ GameObject:
   - component: {fileID: 3196958512167167477}
   - component: {fileID: 3715120553981830198}
   - component: {fileID: 7276706453744137074}
+  - component: {fileID: 5411227954514704049}
+  - component: {fileID: 4722448199823919955}
   m_Layer: 0
-  m_Name: Sample Platformer
+  m_Name: Sample Platformer 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,6 +374,40 @@ MonoBehaviour:
     InwardStep: 0.05
     OutsideThreshold: 0.01
     MaxSurfaceAngle: 5
+--- !u!114 &5411227954514704049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156159312054672884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd3bb7e560541c43b6b56b03f3b62e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4722448199823919955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156159312054672884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d038d5096abbfc4aa8ec808aacdfd55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallDetectionHeightMultiplier: 0.5
+  _climbableTag: Climbable
+  _wallSlideSpeed: 5
+  _wallClimbSpeed: 6
+  _wallSlideAcceleration: 5
+  _wallHangSnapRange: 0.1
+  _ledgeSlipGraceTime: 0.1
+  _wallJumpForceX: 8
+  _wallJumpForceY: 16.66667
+  _wallJumpCoyoteTime: 0.1
 --- !u!1 &335965138228414055
 GameObject:
   m_ObjectHideFlags: 0

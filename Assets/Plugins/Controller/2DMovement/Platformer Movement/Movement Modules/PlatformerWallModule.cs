@@ -2,13 +2,14 @@ using System;
 using NetControllerSystem.Platformer2D;
 using UnityEngine;
 
+[RequireComponent(typeof(PlatformerJumpModule))]
 public class PlatformerWallModule : PlatformerMotorModule
 {
     [Tooltip("The relative height multiplier for wall detection. (aligned to the bottom of the collider)")]
     [SerializeField] private float _wallDetectionHeightMultiplier = 0.5f;
-    [SerializeField] private PlatformerJumpModule _jumpModule;
+    private PlatformerJumpModule _jumpModule;
     
-    public override void HandleLocalMovement()
+    public override void HandleMovement()
     {
         HandleWallDetection();
         HandleStickyWallStates();
@@ -64,8 +65,8 @@ public class PlatformerWallModule : PlatformerMotorModule
     
     [SerializeField] private string _climbableTag = "Climbable";
     [SerializeField] private float _wallSlideSpeed = 5f;
-    [SerializeField] private float _wallClimbSpeed = 5f;
-    [SerializeField] private float _wallSlideAcceleration = 10f;
+    [SerializeField] private float _wallClimbSpeed = 6f;
+    [SerializeField] private float _wallSlideAcceleration = 5f;
     [Tooltip("Whether or not to prevent slipping off of a wall when sliding down it")]
     private float _wallSlideVelocity;
 
@@ -267,6 +268,7 @@ public class PlatformerWallModule : PlatformerMotorModule
 
     private void Awake()
     {
+        _jumpModule = GetComponent<PlatformerJumpModule>();
         _jumpModule.OnJump += JumpModuleOnOnJump;
         _jumpModule.OnDoubleJump += JumpModuleOnOnJump;
         
@@ -294,7 +296,7 @@ public class PlatformerWallModule : PlatformerMotorModule
     #region Wall Jump
     
     [SerializeField] private float _wallJumpForceX = 8f;
-    [SerializeField] private float _wallJumpForceY = 16f;
+    [SerializeField] private float _wallJumpForceY = 16.66667f;
     [SerializeField] private float _wallJumpCoyoteTime = 0.1f;
     
     private float _lastWallContactTime;

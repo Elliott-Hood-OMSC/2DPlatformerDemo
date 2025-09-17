@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace NetControllerSystem.Platformer2D
@@ -8,16 +9,23 @@ namespace NetControllerSystem.Platformer2D
         [SerializeField] private float _turnAroundSpeedMultiplier = 1.5f;
         [SerializeField] private float _groundAccelerationTime = 0.1f;
         [SerializeField] private float _airAccelerationTime = 0.1f;
-        [SerializeField] private float _groundSpeed = 8;
-        [SerializeField] private float _airSpeed = 8;
+        [SerializeField] private float _groundSpeed = 25 / 3f;
+        [SerializeField] private float _airSpeed = 25 / 3f;
         [Tooltip("Applies only when not inputting movement")]
         [SerializeField] private float _groundDrag = 20;
         [Tooltip("Applies only when not inputting movement")]
         [SerializeField] private float _airDrag = 5;
 
-        public override void HandleLocalMovement()
+        private PlatformerCrouchModule _crouchModule;
+        
+        private void Awake()
         {
-            if (Controller.InputtingHorizontalMovement && (motor.CrouchModule == null || !motor.CrouchModule.Crouching)) // Stop movement if crouching
+            _crouchModule = GetComponent<PlatformerCrouchModule>();
+        }
+
+        public override void HandleMovement()
+        {
+            if (Controller.InputtingHorizontalMovement && (_crouchModule == null || !_crouchModule.Crouching)) // Stop movement if crouching
             {
                 float targetSpeed = motor.Grounded ? _groundSpeed : _airSpeed;
                 float acceleration = motor.Grounded ? _groundAccelerationTime : _airAccelerationTime;

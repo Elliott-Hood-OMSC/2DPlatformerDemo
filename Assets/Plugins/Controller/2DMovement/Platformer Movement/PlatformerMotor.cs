@@ -9,27 +9,22 @@ namespace NetControllerSystem.Platformer2D
     public class PlatformerMotor : Motor
     {
         [SerializeField] private Collider2D _collider;
-        public Collider2D Collider => _collider;
         [SerializeField] private GroundCheck _groundCheck;
-        [SerializeField] private PlatformerHorizontalMovementModule _horizontalMovementModule;
-        [SerializeField] private PlatformerJumpModule _jumpModule;
-        [SerializeField] private PlatformerCrouchModule _crouchModule;
-        [SerializeField] private PlatformerWallModule _platformerWallModule;
-        public PlatformerHorizontalMovementModule HorizontalMovementModule => _horizontalMovementModule;
-        public PlatformerJumpModule JumpModule => _jumpModule;
-        public PlatformerCrouchModule CrouchModule => _crouchModule;
         
+        public Collider2D Collider => _collider;
         public Vector2 LastVelocity { get; private set; }
-
         public float CounteractGravityVelocity => -Physics2D.gravity.y * Rb.gravityScale * Time.fixedDeltaTime;
-        public Vector3 GroundContactPoint => new Vector2(transform.position.x, Collider.bounds.min.y);
+        private Vector3 GroundContactPoint => new Vector2(transform.position.x, Collider.bounds.min.y);
+        private PlatformerMotorModule[] _modules;
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            _horizontalMovementModule.Initialize(this);
-            _jumpModule.Initialize(this);
-            _crouchModule.Initialize(this);
-            _platformerWallModule.Initialize(this);
+            base.Awake();
+            _modules = GetComponents<PlatformerMotorModule>();
+            foreach (PlatformerMotorModule platformerMotorModule in _modules)
+            {
+                platformerMotorModule.Initialize(this);
+            }
         }
 
         protected virtual void FixedUpdate()
@@ -39,19 +34,18 @@ namespace NetControllerSystem.Platformer2D
 
         public override void HandleLocalControllerMovement()
         {
-            _crouchModule.HandleLocalMovement();
-            _horizontalMovementModule.HandleLocalMovement();
-            _jumpModule.HandleLocalMovement();
-            _platformerWallModule.HandleLocalMovement();
+            foreach (PlatformerMotorModule platformerMotorModule in _modules)
+            {
+                platformerMotorModule.HandleMovement();
+            }
 
             LastVelocity = Rb.linearVelocity;
         }
 
-        protected void OnEnabledStateChanged(bool oldValue, bool newValue)
+        protected void OnEnable()
         {
             LastVelocity = Rb.linearVelocity;
         }
-
 
         #region Ground Check
 

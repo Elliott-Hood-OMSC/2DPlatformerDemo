@@ -5,7 +5,7 @@ namespace NetControllerSystem.Platformer2D
 {
     public class PlatformerJumpModule : PlatformerMotorModule
     {
-        public override void HandleLocalMovement()
+        public override void HandleMovement()
         {
             HandleHeadBonk();
             HandleJump();
@@ -42,11 +42,10 @@ namespace NetControllerSystem.Platformer2D
         {
             public int NumDoubleJumps = 1;
             public float JumpHeight = 16.66667f;
-            public float JumpEndEarlyForce = 8.333333f;
-            public float JumpEndEarlyWindowDuration = 0.15f;
+            public float JumpEndEarlyForce = 0.6f;
+            public float JumpEndEarlyWindowDuration = 0.2f;
         }
         [SerializeField] private JumpConfig _jumpSettings;
-        public JumpConfig JumpSettings => _jumpSettings;
         
         [Serializable]
         public class CoyoteTimeSettings
@@ -118,7 +117,7 @@ namespace NetControllerSystem.Platformer2D
 
                 if (!motor.Weightless)
                 {
-                    motor.Rb.AddForce(new Vector2(0, -1 * _jumpSettings.JumpEndEarlyForce * motor.Rb.linearVelocity.y), ForceMode2D.Impulse);
+                    motor.Rb.AddForce(new Vector2(0, -_jumpSettings.JumpEndEarlyForce * motor.Rb.linearVelocity.y), ForceMode2D.Impulse);
                 }
             }
         }
@@ -211,8 +210,8 @@ namespace NetControllerSystem.Platformer2D
         private class HeadbonkSettings
         {
             [Tooltip("Higher -> longer weightless duration. ")]
-            public float YVelocityToWeightlessDurationMultiplier = 0.01f;
-            public float MaxWeightlessDuration = 0.15f;
+            public float YVelocityToWeightlessDurationMultiplier = 0.15f;
+            public float MaxWeightlessDuration = 0.1f;
             [Tooltip("The minimum y velocity needed to register a headbonk")]
             public float YVelocityThreshold = 1;
         }
@@ -285,7 +284,7 @@ namespace NetControllerSystem.Platformer2D
             public Collider2D Collider;
             public float BaseRayDistance = 0.15f;
             public int CornerRayCount = 4;
-            public float InwardStep = 0.02f;
+            public float InwardStep = 0.05f;
             [Tooltip("Extra horizontal offset for the outermost ray (helps catch corner cases)")]
             public float OutsideThreshold = 0.01f;
             [Tooltip("Max angle (degrees) difference allowed between surface normal and vertical for snapping")]

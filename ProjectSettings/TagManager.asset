@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Hurtbox
   - Hitbox
-  - 
+  - Platform
   - 
   - 
   - 
@@ -48,7 +48,7 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Tile Ground
+  - name: Ground
     uniqueID: 1059460729
     locked: 0
   - name: Tile Foreground

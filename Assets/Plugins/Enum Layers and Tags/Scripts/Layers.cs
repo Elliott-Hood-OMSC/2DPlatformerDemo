@@ -8,6 +8,7 @@ public static class Layers
     public const int UI = 5;
     public const int Hurtbox = 6;
     public const int Hitbox = 7;
+    public const int Platform = 8;
 
     public static int ToLayerMask(int layer)
     {
