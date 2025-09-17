@@ -1,65 +1,86 @@
+using DG.Tweening;
 using UnityEngine;
 using NetControllerSystem.Platformer2D;
 
-[RequireComponent(typeof(TransformSquisher2D))]
 public class JumpSquashStretch : MonoBehaviour
 { 
-    [SerializeField] private PlatformerMotor _platformerMotor;/*
-    [SerializeField] private TemporaryEffector _landEffector;
-    [SerializeField] private TemporaryEffector _jumpEffector;
-    [SerializeField] private ToggleEffector _fallingEffector;
-    [SerializeField] private TemporaryEffector _crouchEffector;
-    [SerializeField] private TemporaryEffector _uncrouchEffector;
-    private TransformSquisher2D _transformSquisher;
-    private bool _crouching;
+    [SerializeField] private PlatformerMotor _platformerMotor;
+    
+    [Header("Jumping")]
+    [SerializeField] private PlatformerJumpModule _jumpModule;
+    [SerializeField] private TweenSettings _jumpEffector;
 
+    [Header("Landing")]
+    [SerializeField] private TweenSettings _landEffector;
+
+    [Header("Crouching")]
+    [SerializeField] private PlatformerCrouchModule _crouchModule;
+    [SerializeField] private TweenSettings _crouchEffector;
+    [SerializeField] private TweenSettings _uncrouchEffector;
+
+    private bool _crouchSquishApplied;
+    private Vector3 _defaultScale;
+    private Tween _currentTween;
+
+    [System.Serializable]
+    private class TweenSettings
+    {
+        public float intensity = 0.3f;
+        public float duration = 0.3f;
+        public Ease ease = Ease.OutQuad;
+    }
+    
     private void Awake()
     {
-        _transformSquisher = GetComponent<TransformSquisher2D>();
+        _defaultScale = transform.localScale;
+
         _platformerMotor.OnLand += PlatformerMotorOnLand;
-        _platformerMotor.JumpModule.OnJump += PlatformMovement_OnJump;
-        _platformerMotor.JumpModule.OnDoubleJump += PlatformMovement_OnJump;
-        _transformSquisher.squishValue.AddToggleableEffector(_fallingEffector);
+        _jumpModule.OnJump += PlatformMovement_OnJump;
+        _jumpModule.OnDoubleJump += PlatformMovement_OnJump;
     }
 
     private void FixedUpdate()
     {
-        if (_platformerMotor.Grounded)
+        if (_crouchModule.Crouching)
         {
-            _fallingEffector.Disable(false);
-
+            if (_crouchSquishApplied) return;
+            _crouchSquishApplied = true;
+            PlaySquash(_crouchEffector, squashDown: true);
         }
         else
         {
-            if (!_fallingEffector.Enabled && _platformerMotor.Rb.velocity.y < -0.2f)
-                _fallingEffector.Enable();
-        }
-
-        if (_platformerMotor.CrouchModule.Crouching)
-        {
-            if (!_crouching)
-            {
-                _transformSquisher.Squish(_crouchEffector);
-                _crouching = true;
-            }
-        }
-        else
-        {
-            if (_crouching)
-            {
-                _transformSquisher.Squish(_uncrouchEffector);
-                _crouching = false;
-            }
+            if (!_crouchSquishApplied) return;
+            _crouchSquishApplied = false;
+            PlaySquash(_uncrouchEffector, squashDown: false);
         }
     }
 
     private void PlatformerMotorOnLand(object sender, System.EventArgs e)
     {
-        _transformSquisher.Squish(_landEffector);
+        PlaySquash(_landEffector, squashDown: true);
     }
 
     private void PlatformMovement_OnJump(object sender, System.EventArgs e)
     {
-        _transformSquisher.Squish(_jumpEffector);
-    }*/
+        PlaySquash(_jumpEffector, squashDown: false);
+    }
+
+    private void PlaySquash(TweenSettings settings, bool squashDown)
+    {
+        _currentTween?.Kill();
+
+        Vector3 squashScale = new Vector3(
+            _defaultScale.x * (squashDown ? 1 + settings.intensity : 1 - settings.intensity),
+            _defaultScale.y * (squashDown ? 1 - settings.intensity : 1 + settings.intensity),
+            _defaultScale.z
+        );
+
+        _currentTween = transform.DOScale(squashScale, settings.duration * 0.5f)
+            .SetEase(settings.ease)
+            .OnComplete(() =>
+            {
+                _currentTween = transform.DOScale(_defaultScale, settings.duration * 0.5f)
+                    .SetEase(settings.ease);
+            });
+    }
 }

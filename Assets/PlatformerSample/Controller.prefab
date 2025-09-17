@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motor: {fileID: 3196958512167167477}
-  _flipAnchor: {fileID: 5504342347968506301}
+  _flipAnchor: {fileID: 638935486010940222}
   _jumpAnimationLength: 0.25
   _fighterController: {fileID: 7580666695933235646}
   _platformerJumpModule: {fileID: 7276706453744137074}
@@ -414,8 +414,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5504342347968506301}
+  - component: {fileID: 8404052440321090289}
   m_Layer: 0
-  m_Name: Sprite - Distortion Anchor
+  m_Name: Sprite - Squash Anchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,6 +438,37 @@ Transform:
   - {fileID: 638935486010940222}
   m_Father: {fileID: 4350506631375414869}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8404052440321090289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430985511045796156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6115d8839c886cd4aa4c82e9644c9bfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _platformerMotor: {fileID: 3196958512167167477}
+  _jumpModule: {fileID: 0}
+  _jumpEffector:
+    intensity: 0.4
+    duration: 0.4
+    ease: 6
+  _landEffector:
+    intensity: 0.4
+    duration: 0.15
+    ease: 6
+  _crouchModule: {fileID: 0}
+  _crouchEffector:
+    intensity: 0.3
+    duration: 0.1
+    ease: 27
+  _uncrouchEffector:
+    intensity: 0.3
+    duration: 0.1
+    ease: 27
 --- !u!1 &2866797870359547509
 GameObject:
   m_ObjectHideFlags: 0
