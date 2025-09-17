@@ -24,9 +24,8 @@ namespace NetControllerSystem.Platformer2D
         public float CounteractGravityVelocity => -Physics2D.gravity.y * Rb.gravityScale * Time.fixedDeltaTime;
         public Vector3 GroundContactPoint => new Vector2(transform.position.x, Collider.bounds.min.y);
 
-        protected override void Awake()
+        protected virtual void Awake()
         {
-            base.Awake();
             _horizontalMovementModule.Initialize(this);
             _jumpModule.Initialize(this);
             _crouchModule.Initialize(this);

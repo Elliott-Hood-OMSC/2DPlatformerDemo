@@ -22,7 +22,7 @@ public abstract class FighterAnimator : MonoBehaviour
         try
         {
             FighterController controller = motor.Controller as FighterController;
-            return controller != null && controller.Possessed && controller.CurrentState != FighterController.States.Ability;
+            return controller != null && controller.CurrentState != FighterController.States.Ability;
         }
         catch
         {

@@ -8,9 +8,6 @@ public static class Layers
     public const int UI = 5;
     public const int Hurtbox = 6;
     public const int Hitbox = 7;
-    public const int EntityTrigger = 8;
-    public const int Platform = 9;
-    public const int Pixelated = 10;
 
     public static int ToLayerMask(int layer)
     {

@@ -13,7 +13,7 @@ public class FighterController : RigidbodyController
     {
         HandleHitstop();
 
-        if (Possessed && InMovementState())
+        if (InMovementState())
         {
             _motor.HandleLocalControllerMovement();
         }

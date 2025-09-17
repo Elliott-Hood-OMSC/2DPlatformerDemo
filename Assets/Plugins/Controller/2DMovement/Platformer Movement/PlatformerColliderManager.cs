@@ -15,9 +15,6 @@ namespace NetControllerSystem.Platformer2D
         [SerializeField] private PolygonCollider2D _slopedCollision;
         [SerializeField] private Vector2 _size;
         [SerializeField] private Vector2 _slopeSize = new Vector2(0.05f, 0.01f);  // The height of the slope at the bottom corners of the collision
-        [Header("Hurtbox")]
-        [SerializeField] private CircleCollider2D _hurtbox;
-        [SerializeField] private float _hurtboxRadius = 0.6f;
         [Header("Ground Checks")]
         [SerializeField] private BoxCollider2D _groundCheck;
         [SerializeField] private BoxCollider2D _platformGroundCheck;
@@ -36,7 +33,6 @@ namespace NetControllerSystem.Platformer2D
         private void OnValidate()
         {
             SetSlopedCollision();
-            SetHurtboxSize();
             SetGroundChecks();
         }
 
@@ -56,14 +52,6 @@ namespace NetControllerSystem.Platformer2D
             points[5] = new Vector2(bounds.xMin, bounds.yMin + _slopeSize.y); // Bottom-left with slope
 
             _slopedCollision.points = points;
-        }
-
-        private void SetHurtboxSize()
-        {
-            if (!_hurtbox)
-                return;
-            _hurtbox.radius = _hurtboxRadius;
-            _hurtbox.offset = new Vector2(0, _size.y / 2);
         }
 
         private void SetGroundChecks()

@@ -11,36 +11,8 @@ namespace NetControllerSystem {
     [SelectionBase]
     public class EntityController : MonoBehaviour
     {
-        public InputManager InputManager => PlayerBrain.InputManager;
+        public InputManager InputManager;
         public InputState Input => InputManager.Input;
-        
-        #region Player Brain Reference
-
-        public bool Possessed => _playerBrain != null;
-        
-        private PlayerBrain _playerBrain;
-        public PlayerBrain PlayerBrain
-        {
-            get => _playerBrain;
-            set
-            {
-                if (_playerBrain != value)
-                {
-                    PlayerBrain oldBrain = _playerBrain;
-                    _playerBrain = value;
-                    OnPlayerBrainChanged?.Invoke(oldBrain, _playerBrain);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Called whenever the PlayerBrain changes. 
-        /// oldBrain can be null when first possessed or depossessed.
-        /// newBrain can be null when depossessed.
-        /// </summary>
-        public Action<PlayerBrain, PlayerBrain> OnPlayerBrainChanged;
-
-        #endregion
 
         #region Input Shortcuts That Rely On Controller Position / Orientation
 
