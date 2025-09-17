@@ -24,6 +24,7 @@ namespace NetControllerSystem.Platformer2D
         [SerializeField] private PlatformerCrouchModule _crouchModule;
         [SerializeField] private PlatformerWallModule _platformerWallModule;
         private PlatformerMotor PlatformerMotor => (PlatformerMotor)motor;
+        private float _lockInJumpAnimationUntilTime;
 
         protected override void Awake()
         {
@@ -47,8 +48,6 @@ namespace NetControllerSystem.Platformer2D
             HandleAnimation();
         }
 
-        private float _lockInJumpAnimationUntilTime;
-
         private void HandleAnimation()
         {
             int state = _fighterController.CurrentState == FighterController.States.Dead ? Dead : GetMovementState();
@@ -59,7 +58,7 @@ namespace NetControllerSystem.Platformer2D
         private int GetMovementState()
         {
             int state;
-            if (_platformerWallModule.State != PlatformerWallModule.WallState.None)
+            if (_platformerWallModule != null && _platformerWallModule.State != PlatformerWallModule.WallState.None)
             {
                 state = GetWallState();
             }
@@ -92,21 +91,6 @@ namespace NetControllerSystem.Platformer2D
                     return -1;
             }
         }
-        
-        protected virtual int GetAirState()
-        {
-            int state;
-            if (_platformerJumpModule.Rising || _lockInJumpAnimationUntilTime >= Time.time)
-            {
-                state = Jump;
-            }
-            else
-            {
-                state = Fall;
-            }
-
-            return state;
-        }
 
         protected virtual int GetGroundedState()
         {
@@ -122,6 +106,21 @@ namespace NetControllerSystem.Platformer2D
             else
             {
                 state = Idle;
+            }
+
+            return state;
+        }
+        
+        protected virtual int GetAirState()
+        {
+            int state;
+            if (_platformerJumpModule.Rising || _lockInJumpAnimationUntilTime >= Time.time)
+            {
+                state = Jump;
+            }
+            else
+            {
+                state = Fall;
             }
 
             return state;

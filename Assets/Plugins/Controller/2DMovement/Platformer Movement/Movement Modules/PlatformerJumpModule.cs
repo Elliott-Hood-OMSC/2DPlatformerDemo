@@ -283,7 +283,7 @@ namespace NetControllerSystem.Platformer2D
         {
             public Collider2D Collider;
             public float BaseRayDistance = 0.15f;
-            public int CornerRayCount = 4;
+            public int CornerRayCount = 6;
             public float InwardStep = 0.05f;
             [Tooltip("Extra horizontal offset for the outermost ray (helps catch corner cases)")]
             public float OutsideThreshold = 0.01f;

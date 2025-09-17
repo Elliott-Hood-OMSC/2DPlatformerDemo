@@ -100,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 150927765174101916}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: -8096178915444821780, guid: 941d94544698c3942982e6831599b8a7, type: 3}
+  m_Controller: {fileID: -7847969621036054086, guid: 941d94544698c3942982e6831599b8a7, type: 3}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -128,9 +128,9 @@ MonoBehaviour:
   _flipAnchor: {fileID: 5504342347968506301}
   _jumpAnimationLength: 0.25
   _fighterController: {fileID: 7580666695933235646}
-  _crouchModule: {fileID: 5411227954514704049}
   _platformerJumpModule: {fileID: 7276706453744137074}
-  _platformerWallModule: {fileID: 4722448199823919955}
+  _crouchModule: {fileID: 0}
+  _platformerWallModule: {fileID: 0}
 --- !u!1 &156159312054672884
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,15 +141,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4350506631375414869}
   - component: {fileID: 7281997082115945849}
-  - component: {fileID: 4680266759737766835}
   - component: {fileID: 7580666695933235646}
   - component: {fileID: 3196958512167167477}
   - component: {fileID: 3715120553981830198}
   - component: {fileID: 7276706453744137074}
-  - component: {fileID: 5411227954514704049}
-  - component: {fileID: 4722448199823919955}
   m_Layer: 0
-  m_Name: Sample Platformer 1
+  m_Name: Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200,58 +197,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &4680266759737766835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156159312054672884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7db70e0ea77f5ac47a8f4565a9406397, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ShadowGroup: 0
-  m_Priority: 0
-  m_ComponentVersion: 5
-  m_HasRenderer: 0
-  m_UseRendererSilhouette: 1
-  m_CastsShadows: 1
-  m_SelfShadows: 0
-  m_AlphaCutoff: 0.1
-  m_ApplyToSortingLayers: 00000000
-  m_ShapePath:
-  - {x: -0.21756029, y: 0.017007872, z: 0}
-  - {x: -0.22083333, y: 1, z: 0}
-  - {x: 0.22032309, y: 0.9945143, z: 0}
-  - {x: 0.21516716, y: 0.021794915, z: 0}
-  m_ShapePathHash: -1167376637
-  m_InstanceId: 189868
-  m_ShadowShape2DComponent: {fileID: 0}
-  m_ShadowShape2DProvider:
-    rid: -2
-  m_ShadowCastingSource: 1
-  m_ShadowMesh:
-    m_Mesh: {fileID: 0}
-    m_LocalBounds:
-      m_Center: {x: -0.00025512278, y: 0.5085039, z: 0}
-      m_Extent: {x: 0.22057821, y: 0.49149606, z: 0}
-    m_EdgeProcessing: 1
-    m_TrimEdge: 0
-    m_FlipX: 0
-    m_FlipY: 0
-    m_InitialTrim: 0
-  m_CastingOption: 1
-  m_PreviousTrimEdge: 0
-  m_PreviousEdgeProcessing: 1
-  m_PreviousShadowCastingSource: 1
-  m_PreviousShadowShape2DSource: {fileID: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
 --- !u!114 &7580666695933235646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374,40 +319,6 @@ MonoBehaviour:
     InwardStep: 0.05
     OutsideThreshold: 0.01
     MaxSurfaceAngle: 5
---- !u!114 &5411227954514704049
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156159312054672884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdd3bb7e560541c43b6b56b03f3b62e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4722448199823919955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 156159312054672884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d038d5096abbfc4aa8ec808aacdfd55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallDetectionHeightMultiplier: 0.5
-  _climbableTag: Climbable
-  _wallSlideSpeed: 5
-  _wallClimbSpeed: 6
-  _wallSlideAcceleration: 5
-  _wallHangSnapRange: 0.1
-  _ledgeSlipGraceTime: 0.1
-  _wallJumpForceX: 8
-  _wallJumpForceY: 16.66667
-  _wallJumpCoyoteTime: 0.1
 --- !u!1 &335965138228414055
 GameObject:
   m_ObjectHideFlags: 0
@@ -783,10 +694,10 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -0.3375, y: 1}
       - {x: 0.3375, y: 1}
-      - {x: 0.3375, y: 0.01}
-      - {x: 0.2875, y: 0}
-      - {x: -0.2875, y: 0}
-      - {x: -0.3375, y: 0.01}
+      - {x: 0.3375, y: 0.0025}
+      - {x: 0.32500002, y: 0}
+      - {x: -0.32500002, y: 0}
+      - {x: -0.3375, y: 0.0025}
   m_UseDelaunayMesh: 0
 --- !u!114 &7513784269991776209
 MonoBehaviour:
@@ -802,7 +713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _slopedCollision: {fileID: 1182752463648725288}
   _size: {x: 0.675, y: 1}
-  _slopeSize: {x: 0.05, y: 0.01}
+  _slopeSize: {x: 0.0125, y: 0.0025}
   _groundCheck: {fileID: 4095025248404144525}
   _platformGroundCheck: {fileID: 5648703434774521712}
   _groundCheckBoxThickness: 0.0625

@@ -14,7 +14,7 @@ namespace NetControllerSystem.Platformer2D
         [Tooltip("Shaped with slopes on the bottom corners to prevent getting stuck on terrain (especially tilemaps)")]
         [SerializeField] private PolygonCollider2D _slopedCollision;
         [SerializeField] private Vector2 _size;
-        [SerializeField] private Vector2 _slopeSize = new Vector2(0.05f, 0.01f);  // The height of the slope at the bottom corners of the collision
+        [SerializeField] private Vector2 _slopeSize = new Vector2(0.0125f, 0.0025f);  // The height of the slope at the bottom corners of the collision
         [Header("Ground Checks")]
         [SerializeField] private BoxCollider2D _groundCheck;
         [SerializeField] private BoxCollider2D _platformGroundCheck;
