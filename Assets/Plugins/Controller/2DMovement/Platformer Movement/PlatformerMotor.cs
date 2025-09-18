@@ -56,7 +56,7 @@ namespace NetControllerSystem.Platformer2D
         public float LastGroundedTime { get; private set; }
         public Vector2 LastGroundedPosition { get; private set; }
         
-        public event EventHandler<PositionEventArgs> OnLand;
+        public event Action<PositionInfo> OnLand;
         public event EventHandler OnGroundedUpdate;
 
         private void HandleLandingCheck()
@@ -90,7 +90,7 @@ namespace NetControllerSystem.Platformer2D
 
         protected virtual void Land()
         {
-            OnLand?.Invoke(this, new PositionEventArgs
+            OnLand?.Invoke(new PositionInfo
             {
                 Position = GroundContactPoint
             });
@@ -139,7 +139,7 @@ namespace NetControllerSystem.Platformer2D
         #endregion
     }
 
-    public class PositionEventArgs : EventArgs
+    public class PositionInfo
     {
         public Vector3 Position;
     }

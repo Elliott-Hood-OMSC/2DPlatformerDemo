@@ -57,12 +57,12 @@ public class JumpSquashStretch : MonoBehaviour
         }
     }
 
-    private void PlatformerMotorOnLand(object sender, System.EventArgs e)
+    private void PlatformerMotorOnLand(PositionInfo e)
     {
         PlaySquash(_landEffector, squashDown: true);
     }
 
-    private void PlatformMovement_OnJump(object sender, System.EventArgs e)
+    private void PlatformMovement_OnJump(PositionInfo e)
     {
         PlaySquash(_jumpEffector, squashDown: false);
     }

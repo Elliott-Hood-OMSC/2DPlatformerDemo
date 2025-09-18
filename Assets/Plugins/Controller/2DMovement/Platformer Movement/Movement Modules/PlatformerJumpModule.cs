@@ -25,10 +25,12 @@ namespace NetControllerSystem.Platformer2D
         public void OnDestroy()
         {
             if (motor != null)
+            {
                 motor.OnLand -= MotorOnOnLand;
+            }
         }
 
-        private void MotorOnOnLand(object sender, PositionEventArgs e)
+        private void MotorOnOnLand(PositionInfo e)
         {
             ResetDoubleJumps();
         }
@@ -77,6 +79,10 @@ namespace NetControllerSystem.Platformer2D
             return !motor.Grounded && RemainingDoubleJumps > 0;
         }
 
+        /// <summary>
+        /// Function should return true if jump was already handled
+        /// </summary>
+        /// <param name="handler"></param>
         public void SetJumpOverrideHandler(Func<bool> handler)
         {
             _jumpOverrideHandler = handler;
@@ -420,9 +426,9 @@ namespace NetControllerSystem.Platformer2D
         
         #region Invoking Events
 
-        public event EventHandler<PositionEventArgs> OnJump;
-        public event EventHandler<PositionEventArgs> OnDoubleJump;
-        public event EventHandler<PositionEventArgs> OnFinalDoubleJump;
+        public event Action<PositionInfo> OnJump;
+        public event Action<PositionInfo> OnDoubleJump;
+        public event Action<PositionInfo> OnFinalDoubleJump;
         
         protected enum Events
         {
@@ -436,19 +442,19 @@ namespace NetControllerSystem.Platformer2D
             switch (e)
             {
                 case Events.Jump:
-                    OnJump?.Invoke(this, new PositionEventArgs
+                    OnJump?.Invoke(new PositionInfo
                     {
                         Position = transform.position
                     });
                     break;
                 case Events.DoubleJump:
-                    OnDoubleJump?.Invoke(this, new PositionEventArgs
+                    OnDoubleJump?.Invoke(new PositionInfo
                     {
                         Position = transform.position
                     });
                     break;
                 case Events.FinalDoubleJump:
-                    OnFinalDoubleJump?.Invoke(this, new PositionEventArgs
+                    OnFinalDoubleJump?.Invoke(new PositionInfo
                     {
                         Position = transform.position
                     });

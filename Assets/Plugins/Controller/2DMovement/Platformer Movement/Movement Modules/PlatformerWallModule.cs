@@ -286,7 +286,7 @@ public class PlatformerWallModule : PlatformerMotorModule
         }
     }
 
-    private void JumpModuleOnOnJump(object sender, PositionEventArgs e)
+    private void JumpModuleOnOnJump(PositionInfo e)
     {
         _state = WallState.None;
     }
@@ -294,7 +294,9 @@ public class PlatformerWallModule : PlatformerMotorModule
     #endregion
     
     #region Wall Jump
-    
+
+    [Header("WallJump")] 
+    [SerializeField] private bool _wallJumpEnabled = true;
     [SerializeField] private float _wallJumpForceX = 8f;
     [SerializeField] private float _wallJumpForceY = 16.66667f;
     [SerializeField] private float _wallJumpCoyoteTime = 0.1f;
@@ -346,12 +348,12 @@ public class PlatformerWallModule : PlatformerMotorModule
     
     private Bounds ShiftBounds(Bounds original, float yOffset)
     {
-        var shifted = new Bounds(original.center, original.size);
+        Bounds shifted = new Bounds(original.center, original.size);
         shifted.center += new Vector3(0, yOffset, 0);
         return shifted;
     }
-    
-    public Rect GetWallCheckRect(Bounds bounds, bool leftWall)
+
+    private Rect GetWallCheckRect(Bounds bounds, bool leftWall)
     {
         float width = PlatformerColliderManager.GROUND_CHECK_THICKNESS;
         float height = bounds.size.y * _wallDetectionHeightMultiplier;
@@ -384,10 +386,11 @@ public class PlatformerWallModule : PlatformerMotorModule
             
     private void OnDrawGizmosSelected()
     {
-        PlatformerMotor motor = GetComponent<PlatformerMotor>();
+        // Call GetComponent here so it works in Editor
+        PlatformerMotor platformerMotor = GetComponent<PlatformerMotor>();
         
-        DrawRectGizmo(GetWallCheckRect(motor.Collider.bounds, true), Color.red);
-        DrawRectGizmo(GetWallCheckRect(motor.Collider.bounds, false), Color.red);
+        DrawRectGizmo(GetWallCheckRect(platformerMotor.Collider.bounds, true), Color.red);
+        DrawRectGizmo(GetWallCheckRect(platformerMotor.Collider.bounds, false), Color.red);
     }
 
     private void DrawRectGizmo(Rect checkRect, Color color)

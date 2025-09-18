@@ -34,10 +34,13 @@ namespace NetControllerSystem.Platformer2D
 
         protected virtual void OnDestroy()
         {
-            _platformerJumpModule.OnJump -= PlatformerMovement_OnJump;
+            if (_platformerJumpModule != null)
+            {
+                _platformerJumpModule.OnJump -= PlatformerMovement_OnJump;
+            }
         }
 
-        protected virtual void PlatformerMovement_OnJump(object sender, PositionEventArgs e)
+        protected virtual void PlatformerMovement_OnJump(PositionInfo e)
         {
             _lockInJumpAnimationUntilTime = Time.time + _jumpAnimationLength;
         }
