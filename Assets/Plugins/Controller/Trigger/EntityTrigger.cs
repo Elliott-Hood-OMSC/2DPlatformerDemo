@@ -5,15 +5,12 @@ using UnityEngine;
 
 public class EntityTrigger : MonoBehaviour
 {
-    public int NumEntitiesInside => entitiesInside.Count;
-    public event EventHandler<EntityControllerEventArgs> OnEnter;
-    public event EventHandler<EntityControllerEventArgs> OnExit;
-    protected HashSet<EntityController> entitiesInside = new HashSet<EntityController>();
+    public int NumEntitiesInside => _entitiesInside.Count;
 
-    public class EntityControllerEventArgs : EventArgs
-    {
-        public EntityController controller; 
-    }
+    public event Action<EntityController> OnEnter;
+    public event Action<EntityController> OnExit;
+
+    private readonly HashSet<EntityController> _entitiesInside = new HashSet<EntityController>();
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,12 +18,13 @@ public class EntityTrigger : MonoBehaviour
             return;
 
         EntityController controller = collision.transform.root.GetComponentInChildren<EntityController>();
-
         if (controller == null)
             return;
 
-        entitiesInside.Add(controller);
-        OnEntityEnter(controller);
+        if (_entitiesInside.Add(controller))
+        {
+            OnEntityEnter(controller);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -35,28 +33,22 @@ public class EntityTrigger : MonoBehaviour
             return;
 
         EntityController controller = collision.transform.root.GetComponentInChildren<EntityController>();
-
-        if (controller == null || !entitiesInside.Contains(controller))
+        if (controller == null)
             return;
 
-        entitiesInside.Remove(controller); 
-        OnEntityExit(controller);
+        if (_entitiesInside.Remove(controller))
+        {
+            OnEntityExit(controller);
+        }
     }
 
     protected virtual void OnEntityEnter(EntityController entityController)
     {
-        OnEnter?.Invoke(this, new EntityControllerEventArgs
-        {
-            controller = entityController
-        });
+        OnEnter?.Invoke(entityController);
     }
 
     protected virtual void OnEntityExit(EntityController entityController)
     {
-        OnExit?.Invoke(this, new EntityControllerEventArgs
-        {
-            controller = entityController
-        });
+        OnExit?.Invoke(entityController);
     }
 }
-
