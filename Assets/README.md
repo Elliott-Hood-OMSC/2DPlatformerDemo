@@ -26,7 +26,7 @@ Inspired by [This Youtube Video](https://www.youtube.com/watch?v=yorTG9at90g), a
 This sample includes:
 - An Input Manager Package
 - Wall clinging, sliding, jumping
-- Basic animation
+- Aseprite animation
 - Squash + Stretch
 - Tilemaps
 
@@ -100,6 +100,11 @@ Collision Logic:
 # Other Features (and how to remove them)
 
 ### Squash and Stretch
+
+- Uses DOTween
+- Needs to be on a parent of the player's Sprite Renderer. THe pivot is important!
+- Animates based on landing, jumping, and crouching
+- TO REMOVE: remove the script from any prefabs and delete the script
 
 ### Animation
 

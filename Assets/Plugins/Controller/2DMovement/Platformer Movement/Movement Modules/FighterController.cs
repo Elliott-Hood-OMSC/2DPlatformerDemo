@@ -5,10 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FighterController : RigidbodyController
+/// <summary>
+/// An EntityController with a RigidBody2D that can take Damage and Knockback
+/// </summary>
+[RequireComponent(typeof(Rigidbody2D))]
+public class FighterController : EntityController
 {
     [SerializeField] private Motor _motor;
-
+    public Rigidbody2D Rb { get; private set; }
+    
     protected virtual void FixedUpdate()
     {
         HandleHitstop();
@@ -21,13 +26,13 @@ public class FighterController : RigidbodyController
 
     public virtual bool InMovementState()
     {
-        return CurrentState == States.Movement && !_inHitstun;
+        return CurrentState == States.Movement && !_inHitstop;
     }
 
-    protected override void Awake()
+    protected virtual void Awake()
     {
+        Rb = GetComponent<Rigidbody2D>();
         ForceUpdateState(States.Movement);
-        //ResetRigidbodySettings();
         //CreateAbilities();
     }
 
@@ -40,13 +45,13 @@ public class FighterController : RigidbodyController
         Dead,
     }
 
-    public class StateEventArgs : EventArgs
+    public class StateUpdateInfo
     {
-        public States oldState;
-        public States newState;
+        public States OldState;
+        public States NewState;
     }
 
-    public event EventHandler<StateEventArgs> OnStateChanged;
+    public event Action<StateUpdateInfo> OnStateChanged;
     public States CurrentState { get; private set; }
 
     public void UpdateState(States newState)
@@ -61,10 +66,10 @@ public class FighterController : RigidbodyController
         States oldState = CurrentState;
         CurrentState = newState;
 
-        OnStateChanged?.Invoke(this, new StateEventArgs
+        OnStateChanged?.Invoke(new StateUpdateInfo
         {
-            oldState = oldState,
-            newState = newState
+            OldState = oldState,
+            NewState = newState
         });
 
         UpdateMotorEnabledState(newState);
@@ -81,12 +86,10 @@ public class FighterController : RigidbodyController
     #region Hurtbox
 
     public Hurtbox Hurtbox;
-    private Vector2 _storedHitstunVelocity;
+    private Vector2 _storedHitstopVelocity;
 
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();
-
         Hurtbox.OnHit.AddListener(Damageable_OnTakeDamage);
         Hurtbox.OnDeath.AddListener(Hurtbox_OnDeath);
     }
@@ -99,18 +102,18 @@ public class FighterController : RigidbodyController
     [Serializable]
     public class KnockbackBehaviourSettings
     {
-        public float knockbackMultiplier = 1;
+        public float KnockbackMultiplier = 1;
         [Tooltip("The amount of previous momentum to keep")]
         [Range(0, 1)]
-        public float momentumRetention = 0.8f;
+        public float MomentumRetention = 0.8f;
         [Tooltip("The amount of vertical knockback thats added to every hit. Affected by the knockback multiplier")]
-        public float minimumUpVelocityAddition = 1f;
+        public float MinimumUpVelocityAddition = 1f;
         [Tooltip("The duration of time over which the knockback gets added")]
-        public float knockbackDuration = 0.2f;
-        public AnimationCurve knockbackFalloffCurve;
+        public float KnockbackDuration = 0.2f;
+        public AnimationCurve KnockbackFalloffCurve;
         [Tooltip("The angle range from straight down in which players cannot cancel their vertical knockback with a jump")]
-        public float spikeAngleRange = 15;
-        public float knockbackStiffness;
+        public float SpikeAngleRange = 15;
+        public float KnockbackStiffness;
     }
 
     public KnockbackBehaviourSettings KnockbackSettings;
@@ -119,8 +122,7 @@ public class FighterController : RigidbodyController
 
     private void Damageable_OnTakeDamage(HitEventArgs e)
     {
-        if (Hurtbox.Invincible) return;
-        
+        print("Took damage");
         EnterHitstop(e.hitInfo.hitStop, () =>
         {
             if (_knockbackCoroutine != null)
@@ -139,26 +141,26 @@ public class FighterController : RigidbodyController
         _yKnockbackInterrupted = false;
 
         // Cancel some momentum
-        Rb.linearVelocity *= KnockbackSettings.momentumRetention;
+        Rb.linearVelocity *= KnockbackSettings.MomentumRetention;
 
         // Apply some upward force and the knockback multiplier
-        Vector2 calculatedKnockback = inputtedKnockback + new Vector2(0, KnockbackSettings.minimumUpVelocityAddition);
-        calculatedKnockback *= KnockbackSettings.knockbackMultiplier;
+        Vector2 calculatedKnockback = inputtedKnockback + new Vector2(0, KnockbackSettings.MinimumUpVelocityAddition);
+        calculatedKnockback *= KnockbackSettings.KnockbackMultiplier;
 
         // Continuously apply knockback for a duration
-        float timer = KnockbackSettings.knockbackDuration;
+        float timer = KnockbackSettings.KnockbackDuration;
         while (timer > 0)
         {
             yield return new WaitForFixedUpdate();
             // Calculate a multiplier based on how long it's been since impact (value of the animation curve)
-            float normalizedKnockbackTime = 1 - (timer / KnockbackSettings.knockbackDuration);
-            float knockbackTimeMultiplier = KnockbackSettings.knockbackFalloffCurve.Evaluate(normalizedKnockbackTime);
+            float normalizedKnockbackTime = 1 - (timer / KnockbackSettings.KnockbackDuration);
+            float knockbackTimeMultiplier = KnockbackSettings.KnockbackFalloffCurve.Evaluate(normalizedKnockbackTime);
 
             //ApplyIncrementalKnockbackImplementation(knockbackTimeMultiplier);
             ApplyLerpKnockback(knockbackTimeMultiplier);
 
-            /*            // Apply the force (accounting for timescale)
-                        Rb.AddForce(calculatedKnockback * Time.fixedDeltaTime);*/
+            // Apply the force (accounting for timescale)
+            Rb.AddForce(calculatedKnockback * Time.fixedDeltaTime);
 
             timer -= Time.fixedDeltaTime;
         }
@@ -172,7 +174,7 @@ public class FighterController : RigidbodyController
             Vector2 desiredVelocity = calculatedKnockback * knockbackTimeMultiplier;
 
             // Calculate how closely to have the player's momentum match the desired knockback
-            float t = KnockbackSettings.knockbackStiffness * knockbackTimeMultiplier * Time.fixedDeltaTime;
+            float t = KnockbackSettings.KnockbackStiffness * knockbackTimeMultiplier * Time.fixedDeltaTime;
 
             // Weaker knockback will have a lower t value, and stronger knockback will have a higher t value
             t *= desiredVelocity.magnitude;
@@ -181,7 +183,7 @@ public class FighterController : RigidbodyController
             if (_yKnockbackInterrupted)
             {
                 // If the player is being sent virtually straight down, don't allow them to jump out of it
-                bool withinSpikeRange = Vector2.Angle(Vector2.down, inputtedKnockback) < KnockbackSettings.spikeAngleRange;
+                bool withinSpikeRange = Vector2.Angle(Vector2.down, inputtedKnockback) < KnockbackSettings.SpikeAngleRange;
 
                 if (!withinSpikeRange)
                 {
@@ -196,8 +198,8 @@ public class FighterController : RigidbodyController
 
     /// --- HITSTOP ---
 
-    private bool _inHitstun = false;
-    private readonly Timer _hitstunTimer = new Timer();
+    private bool _inHitstop;
+    private readonly Timer _hitstopTimer = new Timer();
     private readonly List<Action> _onHitstopCompleted = new List<Action>();
 
     public void EnterHitstop(float duration, Action completed = null)
@@ -207,12 +209,13 @@ public class FighterController : RigidbodyController
             ability.Paused = true;
         }*/
         
-        _inHitstun = true;
-        _hitstunTimer.Start(duration);
-        SetRigidbodySettings(RigidbodySettings.Weightless);
+        print("Entered Hitstop");
+        
+        _inHitstop = true;
+        _hitstopTimer.Start(duration);
 
         // Store velocity
-        _storedHitstunVelocity = Rb.linearVelocity;
+        _storedHitstopVelocity = Rb.linearVelocity;
 
         // Store events for when hitstun ends
         if (completed != null)
@@ -221,10 +224,10 @@ public class FighterController : RigidbodyController
 
     private void HandleHitstop()
     {
-        if (!_inHitstun)
+        if (!_inHitstop)
             return;
 
-        if (_hitstunTimer.finished)
+        if (_hitstopTimer.finished)
         {
             ExitHitstop();
         }
@@ -242,17 +245,15 @@ public class FighterController : RigidbodyController
         }*/
         
         // Add velocity back
-        Rb.linearVelocity = _storedHitstunVelocity;
+        Rb.linearVelocity = _storedHitstopVelocity;
 
         // Invoke delayed events
-        foreach (var action in _onHitstopCompleted)
+        foreach (Action action in _onHitstopCompleted)
         {
             action.Invoke();
         }
         _onHitstopCompleted.Clear();
-        _inHitstun = false;
-
-        ResetRigidbodySettings();
+        _inHitstop = false;
     }
 
     #endregion
@@ -373,20 +374,4 @@ public class FighterController : RigidbodyController
     }
 
     #endregion*/
-
-
-    #region Rigidbody Settings
-
-    public override void SetRigidbodySettings(RigidbodySettings settings)
-    {
-        base.SetRigidbodySettings(settings);
-        _motor?.SetRigidbodySettings(settings);
-    }
-
-    public virtual void SetPosition(Vector3 position)
-    {
-        transform.position = position;
-    }
-
-    #endregion
 }

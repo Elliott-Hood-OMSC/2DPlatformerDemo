@@ -1,9 +1,13 @@
 using NetControllerSystem;
 using UnityEngine;
 
+/// <summary>
+/// Basic animation support. Handles basic animations for a 2D controller with a motor
+/// Uses the transform.localScale.x to determine if the entity is facing left or right
+/// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(Animator))]
-public abstract class FighterAnimator : MonoBehaviour
+public abstract class EntityAnimator : MonoBehaviour
 {
     [SerializeField] protected Motor motor;
     [SerializeField] private Transform _flipAnchor;

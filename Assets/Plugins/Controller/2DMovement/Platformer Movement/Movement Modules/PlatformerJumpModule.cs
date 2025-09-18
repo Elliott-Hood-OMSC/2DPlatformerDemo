@@ -176,6 +176,8 @@ namespace NetControllerSystem.Platformer2D
             public float Gravity = 1.75f;
             public float FallGravity = 5f;
             public float FallCap = 7f;
+            [Header("Fastfall Settings")] 
+            public bool FastFallEnabled = true;
             public float FastFallGravityCap = 10f;
             public float FastFallGravityMultiplier = 1.5f;
         }
@@ -183,7 +185,7 @@ namespace NetControllerSystem.Platformer2D
         
         public bool Rising => motor.Rb.linearVelocity.y > 0.1f && !motor.Grounded;
         public bool Falling => motor.Rb.linearVelocity.y < -0.1f && !motor.Grounded;
-        private bool FastFalling => Falling && Controller.Input.move.GetValue().y < 0;
+        private bool FastFalling => _gravitySettings.FastFallEnabled && Falling && Controller.Input.move.GetValue().y < 0;
         public float FallCap => FastFalling ? _gravitySettings.FastFallGravityCap : _gravitySettings.FallCap;
         
         private void HandleGravity()

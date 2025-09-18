@@ -62,9 +62,9 @@ namespace DamageSystem {
 
         private void DeathCheck()
         {
-            if (Dead) return;
-            
             Dead = CurrentHealth <= 0;
+            
+            if (Dead) return;
             
             OnDeath.Invoke();
         }

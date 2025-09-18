@@ -4,7 +4,7 @@ namespace NetControllerSystem.Platformer2D
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Animator))]
-    public class PlatformerAnimator : FighterAnimator
+    public class PlatformerAnimator : EntityAnimator
     {
         // These should match the names of the Aseprite animations
         private static readonly int Idle = Animator.StringToHash("Idle");

@@ -18,6 +18,5 @@ namespace NetControllerSystem
         public Rigidbody2D Rb { get; private set; }
 
         public abstract void HandleLocalControllerMovement();
-        public abstract void SetRigidbodySettings(RigidbodySettings settings);
     }
 }

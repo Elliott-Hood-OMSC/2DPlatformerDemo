@@ -8,6 +8,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].x
+      value: -0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
+      value: 0.625
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].x
+      value: 0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[1].y
+      value: 0.625
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[2].x
+      value: 0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
+      value: 0.35750002
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[4].x
+      value: -0.35750002
+      objectReference: {fileID: 0}
+    - target: {fileID: 132869178245141492, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
+      propertyPath: m_Points.m_Paths.Array.data[0].Array.data[5].x
+      value: -0.37
+      objectReference: {fileID: 0}
     - target: {fileID: 156159312054672884, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: m_Name
       value: Crow
@@ -62,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: -1470589926740064587, guid: 786818ba624591f48875b2bb4412f4de, type: 3}
     - target: {fileID: 4095025248404144525, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: m_Size.x
-      value: 0.72
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 4350506631375414869, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -106,7 +138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5648703434774521712, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: m_Size.x
-      value: 0.72
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 7276706453744137074, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: _jumpSettings.NumDoubleJumps
@@ -187,6 +219,7 @@ MonoBehaviour:
   _wallSlideAcceleration: 5
   _wallHangSnapRange: 0.1
   _ledgeSlipGraceTime: 0.1
+  _wallJumpEnabled: 1
   _wallJumpForceX: 8
   _wallJumpForceY: 16.66667
   _wallJumpCoyoteTime: 0.1

@@ -2,12 +2,16 @@ using UnityEngine;
 
 namespace NetControllerSystem.Platformer2D
 {
+    /// <summary>
+    /// A helper script that configures colliders for platformer movement with tilemaps
+    /// - Also automatically sizes the GroundCheck
+    /// </summary>
     public class PlatformerColliderManager : MonoBehaviour
     {
         /// <summary>
         /// Safe threshold where collisions won't overlap accidentally
         /// </summary>
-        public const float COLLIDER_SPACING = 0.01f;
+        public const float COLLIDER_SPACING = 0.02f;
         public const float GROUND_CHECK_THICKNESS = 0.0625f;
         
         [Header("Collider")]

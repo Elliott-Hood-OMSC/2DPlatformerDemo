@@ -13,7 +13,9 @@ namespace DamageSystem
         public Vector2 knockback;
         public float hitStop;
         public Team team;
+        [HideInInspector]
         public Hitbox hitbox;
+        [HideInInspector]
         public Vector2 hitPosition;
 
         public static HitInfo Default => new HitInfo { 

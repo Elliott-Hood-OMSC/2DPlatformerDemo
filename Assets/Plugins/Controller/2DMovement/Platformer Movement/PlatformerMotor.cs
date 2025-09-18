@@ -128,13 +128,6 @@ namespace NetControllerSystem.Platformer2D
                 Rb.gravityScale = gravity;
             }
         }
-        
-        public override void SetRigidbodySettings(RigidbodySettings settings)
-        {
-            Rb.linearDamping = settings.drag;
-            Rb.mass = settings.mass;
-            SetGravity(settings.gravity);
-        }
 
         #endregion
     }
