@@ -315,7 +315,7 @@ MonoBehaviour:
   _cornerNudgeSettings:
     Collider: {fileID: 1182752463648725288}
     BaseRayDistance: 0.15
-    CornerRayCount: 11
+    CornerRayCount: 6
     InwardStep: 0.05
     OutsideThreshold: 0.025
     MaxSurfaceAngle: 5
