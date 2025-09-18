@@ -41,6 +41,8 @@ public class JumpSquashStretch : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_crouchModule == null)
+            return;
         if (_crouchModule.Crouching)
         {
             if (_crouchSquishApplied) return;

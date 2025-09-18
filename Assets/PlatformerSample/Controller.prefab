@@ -315,9 +315,9 @@ MonoBehaviour:
   _cornerNudgeSettings:
     Collider: {fileID: 1182752463648725288}
     BaseRayDistance: 0.15
-    CornerRayCount: 4
+    CornerRayCount: 11
     InwardStep: 0.05
-    OutsideThreshold: 0.01
+    OutsideThreshold: 0.025
     MaxSurfaceAngle: 5
 --- !u!1 &335965138228414055
 GameObject:
@@ -451,7 +451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformerMotor: {fileID: 3196958512167167477}
-  _jumpModule: {fileID: 0}
+  _jumpModule: {fileID: 7276706453744137074}
   _jumpEffector:
     intensity: 0.4
     duration: 0.4

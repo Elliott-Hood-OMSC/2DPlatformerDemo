@@ -133,10 +133,6 @@ PrefabInstance:
       value: 0.3125
       objectReference: {fileID: 0}
     - target: {fileID: 8404052440321090289, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
-      propertyPath: _jumpModule
-      value: 
-      objectReference: {fileID: 349021501421053561}
-    - target: {fileID: 8404052440321090289, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
       propertyPath: _crouchModule
       value: 
       objectReference: {fileID: 1400468987645540938}
@@ -155,17 +151,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 4928893203763912494}
   m_SourcePrefab: {fileID: 100100000, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
---- !u!114 &349021501421053561 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7276706453744137074, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
-  m_PrefabInstance: {fileID: 6929901572631221515}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7061994765553338623}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8b506f5ebf308a42bae9f85b3a39177, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7061994765553338623 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 156159312054672884, guid: a7eab7ccb1b414b489eb9bcc7a4a55d6, type: 3}
