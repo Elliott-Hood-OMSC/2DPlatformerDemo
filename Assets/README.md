@@ -1,6 +1,8 @@
 # 2D PLATFORMER DEMO
 A 2D Character Controller Template for Game 340
 
+'A character controller should cut as many corners as it needs to in order to execute a player's intention.' - Sun Tzu, the Art of War
+
 Inspired by [This Youtube Video](https://www.youtube.com/watch?v=yorTG9at90g), and a lack of good 2D Rigidbody controllers
 
 # KEY NOTES
@@ -27,7 +29,6 @@ This sample includes:
 - Basic animation
 - Squash + Stretch
 - Tilemaps
-
 
 # SCRIPTS ARCHITECTURE / OVERVIEW
 
