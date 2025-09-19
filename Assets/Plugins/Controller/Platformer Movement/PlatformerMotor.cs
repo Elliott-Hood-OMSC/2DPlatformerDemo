@@ -4,7 +4,8 @@ using UnityEngine;
 namespace ControllerSystem.Platformer2D
 {
     /// <summary>
-    /// Takes input in FixedUpdate time
+    /// Handles universal information like GroundChecks and weightlessness, that are typically accessed by many modules
+    /// Note: This script takes input in FixedUpdate... This is not recommended, but also isn't really noticeable
     /// </summary>
     public class PlatformerMotor : Motor
     {

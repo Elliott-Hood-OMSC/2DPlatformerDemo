@@ -1,9 +1,10 @@
-using System;
-using InputManagement;
 using UnityEngine;
 
 namespace ControllerSystem
 {
+    /// <summary>
+    /// Handles the movement of an entity.
+    /// </summary>
     [RequireComponent(typeof(EntityController))]
     [RequireComponent(typeof(Rigidbody2D))]
     public abstract class Motor : MonoBehaviour

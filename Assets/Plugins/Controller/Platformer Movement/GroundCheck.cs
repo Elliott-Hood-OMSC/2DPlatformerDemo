@@ -3,6 +3,7 @@ using UnityEngine;
 namespace ControllerSystem.Platformer2D
 {
     /// <summary>
+    /// 
     /// The ground detection will not work accurately if their parents are ever rotated
     /// </summary>
     [RequireComponent(typeof(BoxCollider2D))]
@@ -16,22 +17,17 @@ namespace ControllerSystem.Platformer2D
         [SerializeField] private BoxCollider2D _noPlatformZone;
         public bool Grounded { get; private set; }
         public Collider2D LastCollision { get; protected set; }
-        public float LastCollisionLeftTime { get; protected set; }
+        public float LastCollisionLeftTime { get; protected set; } = Mathf.NegativeInfinity;
 
         private bool _groundFoundThisUpdate;
 
         private void OnValidate()
         {
-            if (!_groundBox)
+            if (_groundBox == null)
             {
                 _groundBox = GetComponent<BoxCollider2D>();
                 _groundBox.isTrigger = true;
             }
-        }
-
-        private void Awake()
-        {
-            LastCollisionLeftTime = -100;
         }
 
         private void FixedUpdate()
