@@ -8,9 +8,34 @@ public class PlatformerWallModule : PlatformerMotorModule
     [Tooltip("The relative height multiplier for wall detection. (aligned to the bottom of the collider)")]
     [SerializeField] private float _wallDetectionHeightMultiplier = 1/16f;
     private PlatformerJumpModule _jumpModule;
-    
-    
-    
+
+    public override void Initialize(PlatformerMotor newMotor)
+    {
+        base.Initialize(newMotor);
+
+        if (newMotor.Controller is FighterController fighter)
+        {
+            fighter.OnStateChanged += OnFighterUpdateState;
+        }
+        InitializeJumpModuleListeners();
+    }
+
+    private void OnFighterUpdateState(FighterController.StateUpdateInfo obj)
+    {
+        print(obj.OldState);
+        print(obj.NewState);
+        _state = WallState.None;
+    }
+
+    private void OnDestroy()
+    {
+        if (Controller != null && Controller is FighterController fighter)
+        {
+            fighter.OnStateChanged += OnFighterUpdateState;
+        }
+        ClearJumpModuleListeners();
+    }
+
     public override void HandleMovement()
     {
         HandleWallDetection();
@@ -268,7 +293,7 @@ public class PlatformerWallModule : PlatformerMotorModule
     
     #region Jumping 
 
-    private void Awake()
+    private void InitializeJumpModuleListeners()
     {
         _jumpModule = GetComponent<PlatformerJumpModule>();
         _jumpModule.OnJump += JumpModuleOnOnJump;
@@ -277,7 +302,7 @@ public class PlatformerWallModule : PlatformerMotorModule
         _jumpModule.SetJumpOverrideHandler(HandleWallJump);
     }
 
-    public void OnDestroy()
+    public void ClearJumpModuleListeners()
     {
         if (_jumpModule != null)
         {

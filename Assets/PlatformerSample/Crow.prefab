@@ -219,7 +219,6 @@ MonoBehaviour:
   _wallSlideAcceleration: 5
   _wallHangSnapRange: 0.1
   _ledgeSlipGraceTime: 0.1
-  _wallJumpEnabled: 1
   _wallJumpForceX: 8
   _wallJumpForceY: 16.66667
   _wallJumpCoyoteTime: 0.1
