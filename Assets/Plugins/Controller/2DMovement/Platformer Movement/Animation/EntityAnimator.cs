@@ -49,10 +49,10 @@ public abstract class EntityAnimator : MonoBehaviour
 
     private void HandleFlip()
     {
-        if (motor.Controller.InputtingHorizontalMovement)
-        {
-            FlipToFaceDirection(motor.Controller.Input.move.GetValue().x);
-        }
+        if (!motor.Controller.CanAnimateFlip) return;
+        if (!motor.Controller.InputtingHorizontalMovement) return;
+            
+        FlipToFaceDirection(motor.Controller.Input.move.GetValue().x);
     }
 
     public void FlipToFaceDirection(float direction)

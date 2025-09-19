@@ -54,6 +54,8 @@ public class FighterController : EntityController
     public event Action<StateUpdateInfo> OnStateChanged;
     public States CurrentState { get; private set; }
 
+    public override bool CanAnimateFlip => CurrentState == States.Movement;
+
     public void UpdateState(States newState)
     {
         if (CurrentState == newState)
@@ -90,7 +92,7 @@ public class FighterController : EntityController
 
     protected virtual void Start()
     {
-        Hurtbox.OnHit.AddListener(Damageable_OnTakeDamage);
+        Hurtbox.OnHit.AddListener(Hurtbox_OnHit);
         Hurtbox.OnDeath.AddListener(Hurtbox_OnDeath);
     }
 
@@ -113,16 +115,15 @@ public class FighterController : EntityController
         public AnimationCurve KnockbackFalloffCurve;
         [Tooltip("The angle range from straight down in which players cannot cancel their vertical knockback with a jump")]
         public float SpikeAngleRange = 15;
-        public float KnockbackStiffness;
+        public float KnockbackStiffness = 0.9f;
     }
 
     public KnockbackBehaviourSettings KnockbackSettings;
     private Coroutine _knockbackCoroutine;
     private bool _yKnockbackInterrupted = false;
 
-    private void Damageable_OnTakeDamage(HitEventArgs e)
+    private void Hurtbox_OnHit(HitEventInfo e)
     {
-        print("Took damage");
         EnterHitstop(e.hitInfo.hitStop, () =>
         {
             if (_knockbackCoroutine != null)
@@ -167,7 +168,6 @@ public class FighterController : EntityController
         yield break;
 
         // Knockback that works by lerping the player's velocity to a target velocity. 
-        // This gives a desired visual effect, but causes things like jumping after getting hit to get nullified?
         void ApplyLerpKnockback(float knockbackTimeMultiplier)
         {
             // Calculate desired velocity for this specific knockback
@@ -209,8 +209,6 @@ public class FighterController : EntityController
             ability.Paused = true;
         }*/
         
-        print("Entered Hitstop");
-        
         _inHitstop = true;
         _hitstopTimer.Start(duration);
 
@@ -233,7 +231,8 @@ public class FighterController : EntityController
         }
         else
         {
-            Rb.linearVelocity = Vector2.zero;
+            float counteractGravityVelocity = -Physics2D.gravity.y * Rb.gravityScale * Time.fixedDeltaTime;
+            Rb.linearVelocity = new Vector2(0, counteractGravityVelocity);
         }
     }
 

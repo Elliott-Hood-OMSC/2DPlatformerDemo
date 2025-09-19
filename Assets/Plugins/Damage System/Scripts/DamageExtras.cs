@@ -47,7 +47,7 @@ namespace DamageSystem
         Enemy
     }
 
-    public class HitEventArgs : EventArgs
+    public class HitEventInfo
     {
         public HitInfo hitInfo;
         public Hurtbox hurtbox;

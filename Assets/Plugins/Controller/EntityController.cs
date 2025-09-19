@@ -1,5 +1,4 @@
 using InputManagement;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,6 +12,7 @@ namespace NetControllerSystem {
     {
         public InputManager InputManager;
         public InputState Input => InputManager.Input;
+        public virtual bool CanAnimateFlip => true;
 
         #region Input Shortcuts That Rely On Controller Position / Orientation
 

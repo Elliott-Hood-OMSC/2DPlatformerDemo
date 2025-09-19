@@ -13,14 +13,14 @@ namespace DamageSystem {
         [SerializeField] private bool _invincible = false;
         [Tooltip("Non-substantial hitboxes don't trigger the 'first hit' event on hitboxes. Useful for background objects")]
         [SerializeField] private bool _substantial = true;
-        public bool Invincible => _intangible;
-        public bool Intangible => _invincible;
+        public bool Invincible => _invincible;
+        public bool Intangible => _intangible;
         public bool Substantial => _substantial;
         public Team Team { get; set; }
         public float CurrentHealth { get; set; }
         public bool Dead { get; private set; }
         
-        public readonly UnityEvent<HitEventArgs> OnHit = new UnityEvent<HitEventArgs>();
+        public readonly UnityEvent<HitEventInfo> OnHit = new UnityEvent<HitEventInfo>();
         public readonly UnityEvent OnDeath = new UnityEvent();
         
         private Collider2D _collision;
@@ -38,7 +38,7 @@ namespace DamageSystem {
             if (Intangible || Dead) return;
             
             SetHealth(CurrentHealth - hitInfo.damage);
-            OnHit?.Invoke(new HitEventArgs
+            OnHit?.Invoke(new HitEventInfo
             {
                 hitInfo = hitInfo,
                 hurtbox = this,
@@ -62,11 +62,14 @@ namespace DamageSystem {
 
         private void DeathCheck()
         {
-            Dead = CurrentHealth <= 0;
-            
             if (Dead) return;
             
-            OnDeath.Invoke();
+            Dead = CurrentHealth <= 0;
+
+            if (Dead)
+            {
+                OnDeath.Invoke();
+            }
         }
     }
 }

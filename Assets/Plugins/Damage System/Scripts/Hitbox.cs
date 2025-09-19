@@ -20,11 +20,11 @@ namespace DamageSystem
         /// <summary>
         /// Triggers when this hitbox hits its first substantial hurtbox
         /// </summary>
-        public readonly UnityEvent<HitEventArgs> OnFirstHit = new UnityEvent<HitEventArgs>();
+        public readonly UnityEvent<HitEventInfo> OnFirstHit = new UnityEvent<HitEventInfo>();
         /// <summary>
         /// Triggers when this hitbox hits any hurtbox
         /// </summary>
-        public readonly UnityEvent<HitEventArgs> OnHit = new UnityEvent<HitEventArgs>();
+        public readonly UnityEvent<HitEventInfo> OnHit = new UnityEvent<HitEventInfo>();
 
         public void Activate(HitInfo hitinfo, Vector2 direction)
         {
@@ -87,7 +87,7 @@ namespace DamageSystem
 
         private void InvokeHitEvents(HitInfo hitInfo, Hurtbox hurtbox, bool firstHit)
         {
-            HitEventArgs hitEventArgs = new HitEventArgs
+            HitEventInfo hitEventInfo = new HitEventInfo
             {
                 hitInfo = hitInfo,
                 hurtbox = hurtbox
@@ -95,9 +95,9 @@ namespace DamageSystem
 
             if (firstHit)
             {
-                OnFirstHit.Invoke(hitEventArgs);
+                OnFirstHit.Invoke(hitEventInfo);
             }
-            OnHit.Invoke(hitEventArgs);
+            OnHit.Invoke(hitEventInfo);
         }
     }
 }
