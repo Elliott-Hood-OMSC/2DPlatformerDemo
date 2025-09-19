@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 3715120553981830198}
   - component: {fileID: 7276706453744137074}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: Controller WIth Hurtbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
