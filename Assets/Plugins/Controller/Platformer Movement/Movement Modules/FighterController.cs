@@ -7,6 +7,18 @@ using UnityEngine;
 
 /// <summary>
 /// An EntityController with a RigidBody2D that can take Damage and Knockback
+///
+/// On getting hit:
+/// - Player enters HitStop, and the knockback is stored
+/// - Once HitStop ends, the knockback is released and the player moves
+///     - NOTE: THE KNOCKBACK SYSTEM IS RUDEMENTARY AND WILL LIKELY NEED TWEAKS.
+///     - IT ALSO MAY NOT BE IMPORTANT FOR YOUR GAME
+///     - Right now it works by overriding the players velocity, decaying until it disappears completely
+/// 
+/// Hitstop: a moment where the attacker and player freeze for a moment
+/// - Makes hits feel more impactful
+/// - In single player games, this can be simplified by setting the TimeScale to 0 for a brief moment
+/// 
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 public class FighterController : EntityController
@@ -33,7 +45,6 @@ public class FighterController : EntityController
     {
         Rb = GetComponent<Rigidbody2D>();
         ForceUpdateState(States.Movement);
-        //CreateAbilities();
     }
 
     #region State Machine
@@ -92,8 +103,17 @@ public class FighterController : EntityController
 
     protected virtual void Start()
     {
-        Hurtbox.OnHit.AddListener(Hurtbox_OnHit);
-        Hurtbox.OnDeath.AddListener(Hurtbox_OnDeath);
+        Hurtbox.OnHit += Hurtbox_OnHit;
+        Hurtbox.OnDeath += Hurtbox_OnDeath;
+    }
+
+    private void OnDestroy()
+    {
+        if (Hurtbox != null)
+        {
+            Hurtbox.OnHit -= Hurtbox_OnHit;
+            Hurtbox.OnDeath -= Hurtbox_OnDeath;
+        }
     }
 
     private void Hurtbox_OnDeath()
@@ -132,6 +152,9 @@ public class FighterController : EntityController
         });
     }
 
+    /// <summary>
+    /// Unlocks your Y velocity in a knockback state
+    /// </summary>
     public void InterruptYKnockback()
     {
         _yKnockbackInterrupted = true;
@@ -157,7 +180,6 @@ public class FighterController : EntityController
             float normalizedKnockbackTime = 1 - (timer / KnockbackSettings.KnockbackDuration);
             float knockbackTimeMultiplier = KnockbackSettings.KnockbackFalloffCurve.Evaluate(normalizedKnockbackTime);
 
-            //ApplyIncrementalKnockbackImplementation(knockbackTimeMultiplier);
             ApplyLerpKnockback(knockbackTimeMultiplier);
 
             // Apply the force (accounting for timescale)
@@ -204,18 +226,13 @@ public class FighterController : EntityController
 
     public void EnterHitstop(float duration, Action completed = null)
     {
-        /*foreach (Ability ability in Abilities)
-        {
-            ability.Paused = true;
-        }*/
-        
         _inHitstop = true;
         _hitstopTimer.Start(duration);
 
         // Store velocity
         _storedHitstopVelocity = Rb.linearVelocity;
 
-        // Store events for when hitstun ends
+        // Store events (like knockback) for when hitstun ends
         if (completed != null)
             _onHitstopCompleted.Add(completed);
     }
@@ -231,6 +248,7 @@ public class FighterController : EntityController
         }
         else
         {
+            // To keep the player from falling, you have to counteract gravity
             float counteractGravityVelocity = -Physics2D.gravity.y * Rb.gravityScale * Time.fixedDeltaTime;
             Rb.linearVelocity = new Vector2(0, counteractGravityVelocity);
         }
@@ -238,11 +256,6 @@ public class FighterController : EntityController
 
     private void ExitHitstop()
     {
-        /*foreach (Ability ability in Abilities)
-        {
-            ability.Paused = false;
-        }*/
-        
         // Add velocity back
         Rb.linearVelocity = _storedHitstopVelocity;
 
@@ -256,121 +269,4 @@ public class FighterController : EntityController
     }
 
     #endregion
-
-
-    /*#region Abilities
-
-    // Spawning abilities On Start
-    [SerializeField] private EffectGroup onPrimaryCooldownRechargedEffect;
-    [SerializeField] private EffectGroup onSecondaryCooldownRechargedEffect;
-    [SerializeField] private AbilityConfig[] startAbilities;
-    public event EventHandler OnAbilitiesChange;
-
-    public void OnDestroy()
-    {
-        DestroyAbilities();
-    }
-
-    protected override void OnPossess(PlayerBrain playerBrain)
-    {
-        AttachAbilitiesToInput();
-    }
-
-    protected override void OnDepossess(PlayerBrain playerBrain)
-    {
-        UnattachAbilitiesFromInput();
-    }
-
-    [Serializable]
-    private struct AbilityConfig
-    {
-        public AbilitySO abilitySO;
-        public InputMapping inputMapping;
-    }
-
-    private void AttachAbilitiesToInput()
-    {
-        foreach (var ability in Abilities)
-        {
-            ability.TryLinkControllerInput();
-        }
-    }
-
-    private void UnattachAbilitiesFromInput()
-    {
-        foreach (var ability in Abilities)
-        {
-            ability.UnlinkControllerInput();
-        }
-    }
-
-    private void CreateAbilities()
-    {
-        foreach (AbilityConfig abilityConfig in startAbilities)
-        {
-            CreateAbility(abilityConfig.abilitySO, abilityConfig.inputMapping);
-        }
-    }
-
-    // Used to despawn abilities when this controller is despawned
-    public List<Ability> Abilities = new List<Ability>();
-
-    internal void CreateAbility(AbilitySO ability, InputMapping inputMapping)
-    {
-        Ability newAbility = Instantiate(ability.prefab, null).GetComponent<Ability>();
-        newAbility.NetworkObject.SpawnWithOwnership(OwnerClientId, true);
-        newAbility.NetworkObject.TrySetParent(NetworkObject);
-        newAbility.AttachToController(ability, this, inputMapping);
-    }
-
-    public void AddAbility(Ability ability)
-    {
-        Abilities.Add(ability);
-        ability.OnCooldownFinished += Ability_OnCooldownFinished;
-
-        // Remove null abilities
-        for (int i = Abilities.Count - 1; i >= 0; i--)
-        {
-            if (Abilities[i] == null)
-                Abilities.RemoveAt(i);
-        }
-
-        OnAbilitiesChange?.Invoke(this, EventArgs.Empty);
-    }
-
-    private void Ability_OnCooldownFinished(object sender, EventArgs e)
-    {
-        switch ((sender as Ability).InputMapping)
-        {
-            case InputMapping.PrimaryAbilityButton:
-                break;
-            case InputMapping.SecondaryAbilityButton:
-                onPrimaryCooldownRechargedEffect.Play(BodyCenter, Vector2.down);
-                break;
-            case InputMapping.TertiaryAbilityButton:
-                onSecondaryCooldownRechargedEffect.Play(BodyCenter, Vector2.down);
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void DestroyAbilities()
-    {
-        // Don't despawn abilities when switching scenes. Switching scenes will do that for us
-        if (NetworkSceneTransition.Instance.WaitingForClientToLoadScene)
-            return;
-        
-        foreach (Ability ability in Abilities)
-        {
-            if (ability == null || !ability.NetworkObject.IsSpawned)
-                continue;
-
-            ability.NetworkObject.TryRemoveParent(true);
-            ability.NetworkObject.Despawn();
-            Destroy(ability.gameObject);
-        }
-    }
-
-    #endregion*/
 }

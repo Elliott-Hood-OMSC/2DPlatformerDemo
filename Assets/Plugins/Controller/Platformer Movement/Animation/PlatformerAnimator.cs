@@ -79,20 +79,14 @@ namespace ControllerSystem.Platformer2D
 
         protected virtual int GetWallState()
         {
-            switch (_platformerWallModule.State)
+            return _platformerWallModule.State switch
             {
-                case PlatformerWallModule.WallState.Cling:
-                    return WallCling;
-                case PlatformerWallModule.WallState.Slide:
-                    return WallSlide;
-                case PlatformerWallModule.WallState.Climb:
-                    return WallClimb;
-                case PlatformerWallModule.WallState.Hang:
-                    return WallHang;
-                case PlatformerWallModule.WallState.None:
-                default:
-                    return -1;
-            }
+                PlatformerWallModule.WallState.Cling => WallCling,
+                PlatformerWallModule.WallState.Slide => WallSlide,
+                PlatformerWallModule.WallState.Climb => WallClimb,
+                PlatformerWallModule.WallState.Hang => WallHang,
+                _ => -1
+            };
         }
 
         protected virtual int GetGroundedState()

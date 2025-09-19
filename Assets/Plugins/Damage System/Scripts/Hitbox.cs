@@ -18,7 +18,8 @@ namespace DamageSystem
         }
 
         /// <summary>
-        /// Triggers when this hitbox hits its first substantial hurtbox
+        /// Only triggers on the first substantial Hurtbox per activation.
+        /// Should be used for things like particles, screenshake, and hitstop on the attackers end
         /// </summary>
         public readonly UnityEvent<HitEventInfo> OnFirstHit = new UnityEvent<HitEventInfo>();
         /// <summary>

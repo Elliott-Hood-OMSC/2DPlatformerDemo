@@ -148,7 +148,7 @@ namespace ControllerSystem.Platformer2D
                 BonkHead(motor.Rb.linearVelocity.y);
             }
 
-            // Interrupt y knockback
+            // Knockback partially overrides vertical and horizontal velocity. This prevents your jump from getting 'eaten' when in a knockback state
             if (Controller is FighterController fighter)
             {
                 fighter.InterruptYKnockback();

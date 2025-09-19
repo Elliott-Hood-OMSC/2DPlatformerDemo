@@ -1,8 +1,8 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace DamageSystem {
-
+namespace DamageSystem 
+{
     [RequireComponent(typeof(Collider2D))]
     public class Hurtbox : MonoBehaviour
     {
@@ -19,9 +19,9 @@ namespace DamageSystem {
         public Team Team { get; set; }
         public float CurrentHealth { get; set; }
         public bool Dead { get; private set; }
-        
-        public readonly UnityEvent<HitEventInfo> OnHit = new UnityEvent<HitEventInfo>();
-        public readonly UnityEvent OnDeath = new UnityEvent();
+
+        public Action<HitEventInfo> OnHit;
+        public Action OnDeath;
         
         private Collider2D _collision;
         public Vector2 CenterPosition => (Vector2)transform.position + _collision.offset;
@@ -68,7 +68,7 @@ namespace DamageSystem {
 
             if (Dead)
             {
-                OnDeath.Invoke();
+                OnDeath?.Invoke();
             }
         }
     }

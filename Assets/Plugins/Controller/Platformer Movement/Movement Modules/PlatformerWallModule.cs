@@ -2,6 +2,9 @@ using System;
 using ControllerSystem.Platformer2D;
 using UnityEngine;
 
+/// <summary>
+/// ONLY WORKS ON COLLIDERS WITH THE 'Climbable' TAG!!
+/// </summary>
 [RequireComponent(typeof(PlatformerJumpModule))]
 public class PlatformerWallModule : PlatformerMotorModule
 {
@@ -90,7 +93,6 @@ public class PlatformerWallModule : PlatformerMotorModule
     public const float INTO_WALL_INPUT_THRESHOLD = 0.1f;
     public const float CLIMB_INPUT_THRESHOLD = 0.6f;
     
-    [SerializeField] private string _climbableTag = "Climbable";
     [SerializeField] private float _wallSlideSpeed = 5f;
     [SerializeField] private float _wallClimbSpeed = 6f;
     [SerializeField] private float _wallSlideAcceleration = 5f;
@@ -400,7 +402,7 @@ public class PlatformerWallModule : PlatformerMotorModule
         Collider2D[] hits = Physics2D.OverlapBoxAll(rect.center, rect.size, 0f, GroundCheck.GroundLayerMask);
         foreach (Collider2D hit in hits)
         {
-            if (hit.gameObject.CompareTag(_climbableTag))
+            if (hit.gameObject.CompareTag(Tags.Climbable))
                 return true;
         }
         return false;
