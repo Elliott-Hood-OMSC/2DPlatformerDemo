@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
     /// <summary>
     /// Takes input in FixedUpdate time

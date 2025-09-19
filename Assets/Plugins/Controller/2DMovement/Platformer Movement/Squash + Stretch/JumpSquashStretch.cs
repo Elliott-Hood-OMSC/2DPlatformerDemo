@@ -1,6 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
-using NetControllerSystem.Platformer2D;
+using ControllerSystem.Platformer2D;
 
 public class JumpSquashStretch : MonoBehaviour
 { 

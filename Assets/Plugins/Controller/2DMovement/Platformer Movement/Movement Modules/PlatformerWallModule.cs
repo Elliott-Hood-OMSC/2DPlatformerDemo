@@ -1,5 +1,5 @@
 using System;
-using NetControllerSystem.Platformer2D;
+using ControllerSystem.Platformer2D;
 using UnityEngine;
 
 [RequireComponent(typeof(PlatformerJumpModule))]
@@ -8,6 +8,8 @@ public class PlatformerWallModule : PlatformerMotorModule
     [Tooltip("The relative height multiplier for wall detection. (aligned to the bottom of the collider)")]
     [SerializeField] private float _wallDetectionHeightMultiplier = 1/16f;
     private PlatformerJumpModule _jumpModule;
+    
+    
     
     public override void HandleMovement()
     {
@@ -296,7 +298,6 @@ public class PlatformerWallModule : PlatformerMotorModule
     #region Wall Jump
 
     [Header("WallJump")] 
-    [SerializeField] private bool _wallJumpEnabled = true;
     [SerializeField] private float _wallJumpForceX = 8f;
     [SerializeField] private float _wallJumpForceY = 16.66667f;
     [SerializeField] private float _wallJumpCoyoteTime = 0.1f;

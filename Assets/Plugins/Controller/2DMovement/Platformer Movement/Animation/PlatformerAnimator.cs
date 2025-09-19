@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
     [RequireComponent(typeof(SpriteRenderer))]
     [RequireComponent(typeof(Animator))]

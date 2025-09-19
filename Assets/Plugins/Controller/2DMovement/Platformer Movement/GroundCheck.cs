@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
     /// <summary>
     /// The ground detection will not work accurately if their parents are ever rotated

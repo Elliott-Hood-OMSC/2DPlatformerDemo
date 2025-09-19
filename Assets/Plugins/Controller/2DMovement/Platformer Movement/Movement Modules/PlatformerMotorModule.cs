@@ -1,23 +1,16 @@
-using System;
+using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
-    public abstract class PlatformerMotorModule : MotorModule
+    public abstract class PlatformerMotorModule : MonoBehaviour
     {
         protected PlatformerMotor motor;
         protected EntityController Controller => motor.Controller;
         
-        public override void Initialize(Motor newMotor)
+        public virtual void Initialize(PlatformerMotor newMotor)
         {
-            base.Initialize(newMotor);
-            
-            if (newMotor is not PlatformerMotor platformerMotor)
-                throw new Exception($"{nameof(Motor)} is not type of {nameof(PlatformerMotor)}");
-            
-            motor = platformerMotor;
-            OnInitialize();
+            motor = newMotor;
         }
-
-        protected virtual void OnInitialize() { }
+        public abstract void HandleMovement();
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NetControllerSystem;
+using ControllerSystem;
 using UnityEngine;
 
 public class EntityTrigger : MonoBehaviour

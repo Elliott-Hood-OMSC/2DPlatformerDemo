@@ -2,7 +2,7 @@ using System;
 using InputManagement;
 using UnityEngine;
 
-namespace NetControllerSystem
+namespace ControllerSystem
 {
     [RequireComponent(typeof(EntityController))]
     [RequireComponent(typeof(Rigidbody2D))]

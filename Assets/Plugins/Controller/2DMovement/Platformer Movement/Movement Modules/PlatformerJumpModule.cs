@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
     public class PlatformerJumpModule : PlatformerMotorModule
     {
@@ -16,8 +16,10 @@ namespace NetControllerSystem.Platformer2D
         #region Double Jump Counter
 
         private float RemainingDoubleJumps { get; set; }
-        protected override void OnInitialize()
+        public override void Initialize(PlatformerMotor newMotor)
         {
+            base.Initialize(newMotor);
+            
             ResetDoubleJumps();
             motor.OnLand += MotorOnOnLand;
         }

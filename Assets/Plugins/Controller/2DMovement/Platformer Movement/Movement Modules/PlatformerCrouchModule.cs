@@ -1,4 +1,4 @@
-using NetControllerSystem.Platformer2D;
+using ControllerSystem.Platformer2D;
 
 public class PlatformerCrouchModule : PlatformerMotorModule
 {

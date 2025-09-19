@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace NetControllerSystem.Platformer2D
+namespace ControllerSystem.Platformer2D
 {
     /// <summary>
     /// A helper script that configures colliders for platformer movement with tilemaps

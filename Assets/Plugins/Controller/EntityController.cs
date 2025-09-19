@@ -2,7 +2,7 @@ using InputManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace NetControllerSystem {
+namespace ControllerSystem {
 
     /// <summary>
     /// The general controller base code shared by each type of controller
