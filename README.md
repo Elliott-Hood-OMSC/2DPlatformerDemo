@@ -10,12 +10,12 @@ A 2D Character Controller Template for Game 340
 
 ## This is a learning tool
 - This is just a guideline. I probably made many mistakes, but hopefully looking at this can save you time
-- Its more important that you understand the concepts than every little bit about the code
+- It's more important that you understand the concepts than every little bit about the code
 ## This is a Rigidbody2D Controller
 - I wanted physics based games, but I couldn't find any quality 2D character controllers that were Rigidbody
 - If you don't like working with Rigidbodies, [here's a great alternative](https://www.youtube.com/watch?v=3sWTzMsmdx8)!
 ### Rigidbody Pros:
-- Easier to integrate witih other mechanics. Pushing boxes, physics effectors, materials, getting pushed, softbodies, etc...
+- Easier to integrate with other mechanics. Pushing boxes, physics effectors, materials, getting pushed, softbodies, etc...
 ### Rigidbody Cons:
 - Less control over movement
 - Trusting how Unity moves Rigidbodies [(This is an example of a better collision system that Unity doesn't use)](https://www.youtube.com/watch?v=YR6Q7dUz2uk)
@@ -23,7 +23,7 @@ A 2D Character Controller Template for Game 340
 ## There will be flaws
 
 - If something doesn't make sense, change it
-- Your game will require something different from this template
+- Your game will likely require something different from this template.
 
 ## This example is a little bloated
 
@@ -39,7 +39,7 @@ This sample includes:
 Player Input -> **Input Manager -> Entity Controller -> Motor -> Motor Modules** -> Character Movement
 
 ## Input Manager
-- **Separated from the controller:** if you need to control multiple entities at a time, or swapping between them its as easy as enabling/disabling them
+- **Separated from the controller:** if you need to control multiple entities at a time, or swapping between them it's as easy as enabling/disabling them
 - **Sample Input Actions uses N/E/S/W for controller buttons instead of explicit A/B/X/Y:** consistent controls across all controllers:
 - This input manager has a few features
     - [Input Buffering](https://supersmashbros.fandom.com/wiki/Input_Buffering)
@@ -72,7 +72,7 @@ Player Input -> **Input Manager -> Entity Controller -> Motor -> Motor Modules**
 # PROJECT SETTINGS
 
 ## Gravity
-- **Gravity set to -25 instead of -9.81:** Most games have a higher gravity settings than real life, because it feels bad to float in the air for a long time after you jump
+- **Gravity set to -25 instead of -9.81:** Most games use higher gravity settings than real life, because it feels bad to float in the air for a long time after you jump
 
 ## Collision Matrix + Layers
 
@@ -98,7 +98,7 @@ Collision Logic:
 - NOTE: there may be a better way to do this! 
   - This is a flaw of Rigidbody2D Movement, as we don't want to ever SET our velocity, since we want to interact in a way that makes sense with other objects
     - We instead opt to add proportional force that will get us to a target speed
-  - Because of this its difficult to configure the exact acceleration times / curves
+  - Because of this it's difficult to configure the exact acceleration times / curves
 - I refer again to [this video as to why these settings are important](https://www.youtube.com/watch?v=yorTG9at90g)
 ### Jump Module
 - **Coyote Time**
@@ -112,7 +112,7 @@ Collision Logic:
 - Double jumps
   - Reset when grounded
 ### Wall Module
-- Needs a state machine for the different climbing states, as its more complex. This is a really complicated class!
+- Needs a state machine for the different climbing states, as it's more complex. This is a really complicated class!
 - **Holding into a wall** will allow you to cling to it
   - Also resets double jumps!
 - **Letting go** will have you slide down the wall
@@ -163,11 +163,11 @@ Collision Logic:
   - The free version [Libresprite](https://libresprite.github.io/#!) works too, but takes a little more work to setup and isn't updated
   - Automatically creates and Animator Component and Animations based on Loop Tags in your animation
     - The states are named the same way, (see ```PlatformerAnimator```)
-  - Create animation events in using string tags in Aseprite to do things like play footsteps/particles
+  - Create animation events using string tags in Aseprite to do things like play footsteps/particles
 - THE UNITY ANIMATOR ISN'T YOUR FRIEND FOR SPRITESHEETS/PIXELART ANIMATION.
   - I highly recommend that you [animate through code](https://www.youtube.com/watch?v=ZwLekxsSY3Y) like in the ```PlatformerAnimator```
 - TO REMOVE: remove the Aseprite Integration package, and delete this script.
-  - Nothing should reference this animator script! Its job is to observe everything and visualize it
+  - Nothing should reference this animator script! It's job is to observe everything and visualize it
   - View layer should never touch the Model layer
 
 ### Hitbox / Hurtbox
@@ -227,7 +227,7 @@ Collision Logic:
 
 ## Effects
 
-- An 'VisualEffect' class is what I use, that can: 
+- A 'VisualEffect' class is what I use, that can: 
   - Screenshake / Screen pull
   - Play a particle / animation at a position
   - Play sound effects
@@ -242,7 +242,7 @@ A little coding challenge for you. Some notes from my experience doing so:
   - Try using the ```InputReceiver``` class, and bind it to an input (and always unbind when destroyed!)
   - For a demo project for that, [see here](https://github.com/ElliottHood/Input-Management)
   - Ensure input is user-friendly (try to capture player intention!)
-- Create abilites on **separate gameobjects**
+- Create abilities on **separate GameObjects**
 - Activating abilities that aren't instant should change the FighterController's state to Ability
   - This stops the motor and gives full control to the ability
 - Should be able to add/delete/pause/interrupt all abilities
