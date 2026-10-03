@@ -9,7 +9,7 @@ A 2D Character Controller Template for Game 340
 # KEY NOTES
 
 ## This is a learning tool
-- This is just a guideline. I probably made many mistakes, but hopefully looking at this can save you time
+- This is just a guideline! There may be more optimal ways to do some of this code.
 - It's more important that you understand the concepts than every little bit about the code
 ## This is a Rigidbody2D Controller
 - I wanted physics based games, but I couldn't find any quality 2D character controllers that were Rigidbody
