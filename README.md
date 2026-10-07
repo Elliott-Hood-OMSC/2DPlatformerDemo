@@ -1,5 +1,5 @@
 # 2D PLATFORMER DEMO
-A 2D Character Controller Template for Game 340
+A Rigidbody based 2D character controller template for Unity
 
 **'A character controller should CUT AS MANY CORNERS as it needs to in order to execute a player's intention.' - Sun Tzu, the Art of War**
 
